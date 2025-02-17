@@ -6,6 +6,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-parcelize'
 
+apply from: "$rootProject.projectDir/tasks/keys-loader.gradle"
+
 android {
     compileSdk 34
     namespace "com.picpay.desafio.android"
@@ -21,12 +23,16 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        debug {}
+        debug {
+            buildConfigField("String", "BASE_URL", "${keys.getProperty("BASE_URL_STAGING")}")
+        }
 
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // In a real case, should be another URL for production
+            // buildConfigField("String", "BASE_URL", "${keys.getProperty("BASE_URL_PROD")}")
         }
     }
 
@@ -40,6 +46,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 }
 

@@ -15,3 +15,4 @@
 /.idea/deploymentTargetSelector.xml
 /.idea/kotlinc.xml
 /.idea/migrations.xml
+/keys.properties

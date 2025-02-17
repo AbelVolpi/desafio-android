@@ -1,0 +1,14 @@
+def loadPropertiesFile(String fileName) {
+    def propertiesFile = rootProject.file(fileName)
+
+    if (!propertiesFile.exists()) {
+        throw new GradleException("File '${fileName}' not found!")
+    }
+
+    def properties = new Properties()
+    propertiesFile.withInputStream { properties.load(it) }
+
+    return properties
+}
+
+ext.keys = loadPropertiesFile("keys.properties")
