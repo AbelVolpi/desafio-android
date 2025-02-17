@@ -93,4 +93,8 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test:core-ktx:$core_ktx_test_version"
+
+    // Dependency Injection
+    implementation "io.insert-koin:koin-android:4.0.2"
+    testImplementation "io.insert-koin:koin-test-junit4:4.0.2"
 }
