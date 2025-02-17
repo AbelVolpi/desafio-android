@@ -3,8 +3,8 @@ package com.picpay.desafio.android.presentation
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.R
-import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.databinding.ListItemUserBinding
+import com.picpay.desafio.android.domain.model.User
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 

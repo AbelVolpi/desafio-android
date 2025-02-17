@@ -1,79 +1,51 @@
 package com.picpay.desafio.android.presentation
 
+import android.os.Bundle
 import android.view.View
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.picpay.desafio.android.BuildConfig
-import com.picpay.desafio.android.data.service.PicPayService
-import com.picpay.desafio.android.R
-import com.picpay.desafio.android.data.model.User
-import okhttp3.OkHttpClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.picpay.desafio.android.databinding.ActivityMainBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var adapter: UserListAdapter
+    private lateinit var binding: ActivityMainBinding
+    private val viewModel: MainViewModel by viewModel()
 
-    private val url: String = BuildConfig.BASE_URL
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    private val gson: Gson by lazy { GsonBuilder().create() }
-
-    private val okHttp: OkHttpClient by lazy {
-        OkHttpClient.Builder()
-            .build()
+        setupRecyclerView()
+        observeViewModel()
+        viewModel.fetchUsers()
     }
 
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(url)
-            .client(okHttp)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
+    private fun setupRecyclerView() {
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = UserListAdapter()
     }
 
-    private val service: PicPayService by lazy {
-        retrofit.create(PicPayService::class.java)
-    }
+    private fun observeViewModel() {
+        viewModel.uiState.observe(this) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    binding.userListProgressBar.visibility = View.VISIBLE
+                }
 
-    override fun onResume() {
-        super.onResume()
+                is UiState.Success -> {
+                    binding.userListProgressBar.visibility = View.GONE
+                    (binding.recyclerView.adapter as UserListAdapter).userList = state.data
+                }
 
-        recyclerView = findViewById(R.id.recyclerView)
-        progressBar = findViewById(R.id.user_list_progress_bar)
-
-        adapter = UserListAdapter()
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        progressBar.visibility = View.VISIBLE
-        service.getUsers()
-            .enqueue(object : Callback<List<User>> {
-                override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                    val message = getString(R.string.error)
-
-                    progressBar.visibility = View.GONE
-                    recyclerView.visibility = View.GONE
-
-                    Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT)
+                is UiState.Failure -> {
+                    binding.userListProgressBar.visibility = View.GONE
+                    Toast.makeText(this, "Erro: ${state.exception.message}", Toast.LENGTH_SHORT)
                         .show()
                 }
-
-                override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-                    progressBar.visibility = View.GONE
-
-                    adapter.users = response.body()!!
-                }
-            })
+            }
+        }
     }
 }
