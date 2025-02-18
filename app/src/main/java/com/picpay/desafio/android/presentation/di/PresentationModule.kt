@@ -1,6 +1,6 @@
 package com.picpay.desafio.android.presentation.di
 
-import com.picpay.desafio.android.presentation.MainViewModel
+import com.picpay.desafio.android.presentation.userlist.MainViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 

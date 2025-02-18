@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.presentation
+package com.picpay.desafio.android.presentation.userlist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.picpay.desafio.android.domain.model.User
 import com.picpay.desafio.android.domain.repository.UsersRepository
+import com.picpay.desafio.android.presentation.utils.UiState
 import kotlinx.coroutines.launch
 
 class MainViewModel(

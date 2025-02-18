@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.presentation
+package com.picpay.desafio.android.presentation.userlist
 
 import android.os.Bundle
 import android.view.View
@@ -6,26 +6,36 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.picpay.desafio.android.databinding.ActivityMainBinding
+import com.picpay.desafio.android.presentation.utils.UiState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModel()
+    private lateinit var userListAdapter: UserListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setupRecyclerView()
         observeViewModel()
-        viewModel.fetchUsers()
+
+        if (savedInstanceState == null) {
+            viewModel.fetchUsers()
+        }
     }
 
     private fun setupRecyclerView() {
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = UserListAdapter()
+        if (!::userListAdapter.isInitialized) {
+            userListAdapter = UserListAdapter()
+        }
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = userListAdapter
+        }
     }
 
     private fun observeViewModel() {
@@ -37,13 +47,16 @@ class MainActivity : AppCompatActivity() {
 
                 is UiState.Success -> {
                     binding.userListProgressBar.visibility = View.GONE
-                    (binding.recyclerView.adapter as UserListAdapter).userList = state.data
+                    userListAdapter.userList = state.data
                 }
 
                 is UiState.Failure -> {
                     binding.userListProgressBar.visibility = View.GONE
-                    Toast.makeText(this, "Erro: ${state.exception.message}", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(
+                        this,
+                        "Erro: ${state.exception.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

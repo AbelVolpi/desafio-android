@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.presentation
+package com.picpay.desafio.android.presentation.utils
 
 sealed class UiState<out T> {
     object Loading : UiState<Nothing>()
