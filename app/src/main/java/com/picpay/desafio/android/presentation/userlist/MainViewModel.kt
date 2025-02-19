@@ -28,4 +28,17 @@ class MainViewModel(
             }
         }
     }
+
+    fun refreshUsers() {
+        _uiState.value = UiState.Loading
+
+        viewModelScope.launch {
+            try {
+                val usersList = usersRepository.refreshUsers()
+                _uiState.postValue(UiState.Success(usersList))
+            } catch (e: Exception) {
+                _uiState.postValue(UiState.Failure(e))
+            }
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package com.picpay.desafio.android.data.di
 
 import com.picpay.desafio.android.BuildConfig
-import com.picpay.desafio.android.data.service.PicPayService
+import com.picpay.desafio.android.data.remote.service.PicPayService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
