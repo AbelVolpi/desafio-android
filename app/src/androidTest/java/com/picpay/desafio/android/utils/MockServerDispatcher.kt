@@ -1,11 +1,11 @@
 package com.picpay.desafio.android.utils
 
+import UiTestUtils.getJsonContent
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
-import UiTestUtils.getJsonContent
 
-class MockServerDispatcher{
+class MockServerDispatcher {
     internal inner class RequestDispatcher : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when (request.path) {
@@ -18,4 +18,3 @@ class MockServerDispatcher{
         }
     }
 }
-

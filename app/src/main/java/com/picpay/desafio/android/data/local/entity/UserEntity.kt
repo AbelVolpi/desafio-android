@@ -12,8 +12,7 @@ data class UserEntity(
     val img: String
 )
 
-
-fun List<UserEntity>.toDomain() : List<User> {
+fun List<UserEntity>.toDomain(): List<User> {
     return this.map {
         User(
             id = it.id,
@@ -24,7 +23,7 @@ fun List<UserEntity>.toDomain() : List<User> {
     }
 }
 
-fun List<User>.toEntity() : List<UserEntity> {
+fun List<User>.toEntity(): List<UserEntity> {
     return this.map {
         UserEntity(
             id = it.id,
@@ -34,4 +33,3 @@ fun List<User>.toEntity() : List<UserEntity> {
         )
     }
 }
-

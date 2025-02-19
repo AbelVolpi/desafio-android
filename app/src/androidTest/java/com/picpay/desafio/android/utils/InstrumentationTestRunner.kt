@@ -51,7 +51,6 @@ val instrumentedDatabaseModule = module {
     single<UserDao> { get<AppDatabase>().userDao() }
 }
 
-
 val instrumentedTestNetworkModule = module {
     single { provideTestRetrofit() }
     single { provideTestPicPayService(get()) }
@@ -66,6 +65,3 @@ private fun provideTestRetrofit(): Retrofit =
 private fun provideTestPicPayService(retrofit: Retrofit): PicPayService {
     return retrofit.create(PicPayService::class.java)
 }
-
-
-

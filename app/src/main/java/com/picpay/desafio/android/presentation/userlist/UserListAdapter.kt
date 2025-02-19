@@ -23,7 +23,9 @@ class UserListAdapter : RecyclerView.Adapter<UserListItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserListItemViewHolder {
         val binding = ListItemUserBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
         return UserListItemViewHolder(binding)
     }

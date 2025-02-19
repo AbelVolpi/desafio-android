@@ -48,5 +48,3 @@ private fun provideConverterFactory(): GsonConverterFactory {
 private fun providePicPayService(retrofit: Retrofit): PicPayService {
     return retrofit.create(PicPayService::class.java)
 }
-
-

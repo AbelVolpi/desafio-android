@@ -15,5 +15,5 @@ val databaseModule = module {
         ).build()
     }
 
-    single <UserDao> { get<AppDatabase>().userDao() }
+    single<UserDao> { get<AppDatabase>().userDao() }
 }
