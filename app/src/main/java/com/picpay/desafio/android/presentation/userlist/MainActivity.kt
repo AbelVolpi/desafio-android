@@ -19,11 +19,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         setupRecyclerView()
         observeViewModel()
+        setupSwipeRefresh()
 
         if (savedInstanceState == null) {
             viewModel.fetchUsers()
+        }
+    }
+
+    private fun setupSwipeRefresh() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshUsers()
         }
     }
 
@@ -47,11 +55,13 @@ class MainActivity : AppCompatActivity() {
 
                 is UiState.Success -> {
                     binding.userListProgressBar.visibility = View.GONE
+                    binding.swipeRefreshLayout.isRefreshing = false
                     userListAdapter.userList = state.data
                 }
 
                 is UiState.Failure -> {
                     binding.userListProgressBar.visibility = View.GONE
+                    binding.swipeRefreshLayout.isRefreshing = false
                     Toast.makeText(
                         this,
                         "Erro: ${state.exception.message}",
